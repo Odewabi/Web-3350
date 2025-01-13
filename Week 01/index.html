@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rock, Paper, Scissors</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f8ff;
+        }
+        h1 {
+            color: #333;
+        }
+        .game-container {
+            margin-top: 50px;
+        }
+        .choices {
+            margin: 20px 0;
+        }
+        .choices button {
+            padding: 10px 20px;
+            font-size: 16px;
+            margin: 10px;
+            cursor: pointer;
+        }
+        .results {
+            margin: 20px;
+            font-size: 18px;
+            color: #555;
+        }
+        .score {
+            margin: 20px;
+            font-size: 20px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <h1>Rock, Paper, Scissors</h1>
+    <div class="game-container">
+        <div class="choices">
+            <button onclick="playGame('Rock')">Rock</button>
+            <button onclick="playGame('Paper')">Paper</button>
+            <button onclick="playGame('Scissors')">Scissors</button>
+        </div>
+        <div class="results">
+            <p id="player-choice"></p>
+            <p id="computer-choice"></p>
+            <p id="round-result"></p>
+        </div>
+        <div class="score">
+            <p id="score-board">Player: 0 | Computer: 0</p>
+        </div>
+        <div id="game-over" class="results"></div>
+    </div>
+
+    <script>
+        let playerScore = 0;
+        let computerScore = 0;
+        let rounds = 5;
+
+        function playGame(playerChoice) {
+            if (rounds === 0) {
+                document.getElementById("game-over").textContent = "Game Over! Refresh the page to play again.";
+                return;
+            }
+
+            const choices = ['Rock', 'Paper', 'Scissors'];
+            const computerChoice = choices[Math.floor(Math.random() * choices.length)];
+            const result = determineWinner(playerChoice, computerChoice);
+
+            document.getElementById("player-choice").textContent = `Player chose: ${playerChoice}`;
+            document.getElementById("computer-choice").textContent = `Computer chose: ${computerChoice}`;
+            document.getElementById("round-result").textContent = result;
+
+            document.getElementById("score-board").textContent = `Player: ${playerScore} | Computer: ${computerScore}`;
+
+            rounds--;
+            if (rounds === 0) {
+                endGame();
+            }
+        }
+
+        function determineWinner(player, computer) {
+            if (player === computer) {
+                return "It's a tie!";
+            }
+
+            if (
+                (player === 'Rock' && computer === 'Scissors') ||
+                (player === 'Paper' && computer === 'Rock') ||
+                (player === 'Scissors' && computer === 'Paper')
+            ) {
+                playerScore++;
+                return "You win this round!";
+            } else {
+                computerScore++;
+                return "Computer wins this round!";
+            }
+        }
+
+        function endGame() {
+            let finalMessage = "";
+            if (playerScore > computerScore) {
+                finalMessage = "Congratulations! You won the game!";
+            } else if (playerScore < computerScore) {
+                finalMessage = "Better luck next time! The computer won the game.";
+            } else {
+                finalMessage = "It's a tie overall!";
+            }
+
+            document.getElementById("game-over").textContent = finalMessage;
+        }
+    </script>
+</body>
+</html>
